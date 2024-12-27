@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <string.h>
+
+// Structure to represent a style design
+struct StyleDesign {
+    int designID;
+    char name[50];
+    char type[20];
+    char style[20];
+    int price;
+};
+
+// Function to add a style design
+void addStyleDesign(struct StyleDesign *styleDesigns, int *count) {
+    printf("Enter style design ID: ");
+    scanf("%d", &styleDesigns[*count].designID);
+    getchar(); 
+    printf("Enter style design name: ");
+    fgets(styleDesigns[*count].name, 50, stdin);
+    styleDesigns[*count].name[strcspn(styleDesigns[*count].name, "\n")] = '\0'; 
+    printf("Enter style design type: ");
+    fgets(styleDesigns[*count].type, 20, stdin);
+    styleDesigns[*count].type[strcspn(styleDesigns[*count].type, "\n")] = '\0'; 
+    printf("Enter style design style: ");
+    fgets(styleDesigns[*count].style, 20, stdin);
+    styleDesigns[*count].style[strcspn(styleDesigns[*count].style, "\n")] = '\0'; 
+    printf("Enter style design price: ");
+    scanf("%d", &styleDesigns[*count].price);
+    (*count)++;
+    printf("Style design added successfully!\n");
+}
+
+// Function to display all style designs
+void displayStyleDesigns(struct StyleDesign *styleDesigns, int count) {
+    if (count == 0) {
+        printf("No style designs available.\n");
+    } else {
+        printf("\nList of Style Designs:\n");
+        printf("ID\tName\t\tType\t\tStyle\tPrice\n");
+        printf("---------------------------------------------------------\n");
+        for (int i = 0; i < count; i++) {
+            printf("%d\t%s\t\t%s\t\t%s\t%d\n", styleDesigns[i].designID, styleDesigns[i].name, styleDesigns[i].type, styleDesigns[i].style, styleDesigns[i].price);
+        }
+    }
+}
+
+// Function to check out a style design by its ID
+void checkOutStyleDesign(struct StyleDesign *styleDesigns, int count) {
+    int id;
+    printf("Enter style design ID to issue: ");
+    scanf("%d", &id);
+    int found = 0;
+    for (int i = 0; i < count; i++) {
+        if (styleDesigns[i].designID == id) {
+            printf("Style design issued successfully: %s\n", styleDesigns[i].name);
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Style design not found.\n");
+    }
+}
+
+// Function to return a style design by its ID
+void returnStyleDesign(struct StyleDesign *styleDesigns, int count) {
+    int id;
+    printf("Enter style design ID to return: ");
+    scanf("%d", &id);
+    int found = 0;
+    for (int i = 0; i < count; i++) {
+        if (styleDesigns[i].designID == id) {
+            printf("Style design returned successfully: %s\n", styleDesigns[i].name);
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Style design not found.\n");
+    }
+}
+
+int main() {
+    struct StyleDesign styleDesigns[100]; 
+    int count = 0; 
+    int choice;
+    while (1) {
+        printf("\nStyle Design Management System\n");
+        printf("1. Add Style Design\n");
+        printf("2. Display All Style Designs\n");
+        printf("3. Issue Style Design\n");
+        printf("4. Return Style Design\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                addStyleDesign(styleDesigns, &count);
+                break;
+            case 2:
+                displayStyleDesigns(styleDesigns, count);
+                break;
+            case 3:
+                checkOutStyleDesign(styleDesigns, count);
+                break;
+            case 4:
+                returnStyleDesign(styleDesigns, count);
+                break;
+            case 5:
+                printf("Exiting system...\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+    return 0;
+}
